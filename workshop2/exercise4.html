@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Check</title>
+  <script>
+    
+    window.onload = function() {
+    
+      const isStudent = confirm("Are you a student?");
+      
+      
+      const messageDiv = document.createElement('div');
+      document.body.appendChild(messageDiv);
+
+      
+      if (isStudent) {
+        messageDiv.innerHTML = "<h1>Welcome student</h1>";
+      } else {
+        messageDiv.innerHTML = "<h1>Sorry, this page is for students only</h1>";
+      }
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
