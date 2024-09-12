@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Check</title>
+  <script>
+    function checkBrowser() {
+      // Check for Mozilla Firefox in the user agent string
+      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        // Redirect to Mozilla website if Firefox is detected
+        window.location.href = "http://www.mozilla.org";
+      } else {
+        // Redirect to another website for non-Mozilla browsers
+        window.location.href = "http://www.example.com";
+      }
+    }
+
+    // Call the function when the page loads
+    window.onload = checkBrowser;
+  </script>
+</head>
+<body>
+  <h1>Browser Detection in Progress...</h1>
+</body>
+</html>
