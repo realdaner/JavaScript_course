@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Workshop 8</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script>
+        // Exercise 1: JSON Basics
+        var text = '{ "employees" : [' +
+            '{ "firstName":"John" , "lastName":"Doe" },' +
+            '{ "firstName":"Anna" , "lastName":"Smith" },' +
+            '{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+
+        const displayFirstLastName = () => {
+            const data = JSON.parse(text);
+            const output = data.employees.map(emp => `${emp.firstName} ${emp.lastName}`).join("<br>");
+            document.getElementById('jsondata').innerHTML = output;
+        };
+
+        const displayAllData = () => {
+            const data = JSON.parse(text);
+            const output = JSON.stringify(data, null, 2);
+            document.getElementById('jsondata').innerHTML = `<pre>${output}</pre>`;
+        };
+
+        // Exercise 2: Parsing JSON from Web
+        const apiUrl = "http://www.omdbapi.com/?s=star+wars&apikey=cbbc6750";
+
+        const loadRawData = async () => {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.text();
+                document.getElementById('rawdata').innerText = data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        const loadParsedData = async () => {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                let output = "<table border='1'><tr><th>Title</th><th>Year</th><th>Poster</th></tr>";
+                data.Search.forEach(movie => {
+                    output += `<tr>
+                        <td>${movie.Title}</td>
+                        <td>${movie.Year}</td>
+                        <td><img src="${movie.Poster}" alt="${movie.Title}" width="100"></td>
+                    </tr>`;
+                });
+                output += "</table>";
+                document.getElementById('rawdata').innerHTML = output;
+            } catch (error) {
+                console.error("Error parsing data:", error);
+            }
+        };
+
+        // Exercise 3: OpenWeatherMap API
+        const weatherApiKey = "ff64c247a136f706923d1ee0d55d71e2";
+
+        const getWeatherData = async () => {
+            const city = document.getElementById('city').value;
+            try {
+                const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherApiKey}`);
+                const data = await response.json();
+                displayWeatherData(data);
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+            }
+        };
+
+        const searchWeatherData = async () => {
+            const city = document.getElementById('citysearch').value;
+            try {
+                const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherApiKey}`);
+                const data = await response.json();
+                displayWeatherData(data);
+            } catch (error) {
+                console.error("Error searching weather data:", error);
+            }
+        };
+
+        const displayWeatherData = (data) => {
+            if (data && data.main) {
+                const weatherInfo = `
+                    <p><strong>City:</strong> ${data.name}</p>
+                    <p><strong>Temperature:</strong> ${data.main.temp} °C</p>
+                    <p><strong>Humidity:</strong> ${data.main.humidity} %</p>
+                    <p><strong>Weather:</strong> ${data.weather[0].description}</p>
+                `;
+                document.getElementById('weatherdata').innerHTML = weatherInfo;
+            } else {
+                document.getElementById('weatherdata').innerHTML = `<p>City not found.</p>`;
+            }
+        };
+    </script>
+</head>
+<body class="ws8">
+    <h1>Workshop 8: Parsing JSON/XML with AJAX</h1>
+    <hr />
+    <p>In this exercise we will practice the use of JSON in our JavaScript applications.</p>
+    <hr/>
+    <h2>Exercise 1: JSON Basics</h2>
+    <button onclick="displayFirstLastName()">Display the first and lastname only</button>
+    <button onclick="displayAllData()">Display all data</button>
+    <div id="jsondata">JSON data goes here.</div>
+    <hr/>
+    <h2>Exercise 2: Parsing JSON from Web</h2>
+    <button onclick="loadRawData()">Load raw data</button>
+    <button onclick="loadParsedData()">Load and parse the data</button>
+    <div id="rawdata">Raw data goes here.</div>
+    <hr/>
+    <h2>Exercise 3: Real Life Challenge: OpenWeatherMap API</h2>
+    <p>Select a city from the list:</p>
+    <select id="city">
+        <option value="Helsinki">Helsinki</option>
+        <option value="Stockholm">Stockholm</option>
+        <option value="Rome">Rome</option>
+        <option value="New York">New York</option>
+    </select>
+    <button onclick="getWeatherData()">Get data</button>
+    <p>Or type in a search query:</p>
+    <input id="citysearch" />
+    <button onclick="searchWeatherData()">Search</button>
+    <div id="weatherdata">Weatherdata goes here.</div>
+</body>
+</html>
