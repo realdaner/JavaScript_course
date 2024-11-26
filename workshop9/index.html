@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Workshop 9</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        div {
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+        }
+        table, tr, td {
+            border: 1px solid gray;
+            width: 50%;
+        }
+        img {
+            position: relative;
+            left: 0px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.js" 
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" 
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            // Exercise 2: Basic DOM Scripting
+            console.log("Find all H3 tags:", $("h3"));
+            $("#content").text("Replaced content with this text!");
+            $("img").attr("src", "https://via.placeholder.com/150");
+            $(".sideBarListBox").hide(); // Use toggle for dynamic show/hide
+            $("li:contains('Lorem')").css("text-decoration", "underline");
+            $(".sideBarListBox a").css({ "color": "red", "font-weight": "bold" });
+
+            // Exercise 3: Effects and Animation
+            $("#button").click(() => $("h1").fadeIn());
+            $("#button2").click(() => $("h1").fadeOut());
+            $("#button3").click(() => $("main").slideUp());
+            $("#button4").click(() => $("main").slideDown());
+            $("#button5").click(() => {
+                $("div").animate({
+                    width: "300px",
+                    height: "150px",
+                    left: "+=50px"
+                }, 1000, () => {
+                    alert("Animation complete!");
+                });
+            });
+
+            // Exercise 4: AJAX
+            const loadContent = (url) => {
+                $("#ajax").load(url, (response, status, xhr) => {
+                    if (status === "error") {
+                        $("#ajax").text(`Error: ${xhr.status} - ${xhr.statusText}`);
+                    }
+                });
+            };
+
+            $("#mySelect").change(function () {
+                const selectedValue = $(this).val();
+                let url;
+                if (selectedValue === "first") {
+                    url = "https://meijastiina.github.io/news_rss_topstories.xml";
+                } else if (selectedValue === "second") {
+                    url = "https://www.iltalehti.fi/"; 
+                } else if (selectedValue === "third") {
+                    url = "https://yle.fi/uutiset"; 
+                }
+                loadContent(url);
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Workshop 9: Using jQuery</h1>
+    <hr />
+    <p>In this exercise we will practice the use of jQuery JavaScript library.</p>
+    <hr/>
+    <h2>Exercise 1: Adding jQuery to document</h2>
+    <p>jQuery added and tested successfully.</p>
+    <hr/>
+    <h2>Exercise 2: Basic Dom Scripting</h2>
+    <p>Check the console for operations like finding elements, modifying content, and updating CSS or attributes dynamically.</p>
+    <hr/>
+    <h2>Exercise 3: Effects and animation</h2>
+    <p>
+        <input type="button" id="button" value="Fade in H1">
+        <input type="button" id="button2" value="Fade out H1">
+        <input type="button" id="button3" value="SlideUp main contents">
+        <input type="button" id="button4" value="SlideDown main contents">
+        <input type="button" id="button5" value="Animate">
+    </p>
+    <hr/>
+    <h2>Exercise 4: Ajax</h2>
+    <p>Select an item from the list to load content via AJAX.</p>
+    <p>
+        <select id="mySelect">
+            <option value="first">First item</option>
+            <option value="second">Second item</option>
+            <option value="third">Third item</option>
+        </select>
+    </p>
+    <div id="ajax" style="border: 1px solid black; width: 400px;">AJAX content will appear here.</div>
+</body>
+</html>
